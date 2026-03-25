@@ -1,10 +1,15 @@
 import { useRouter } from 'next/router';
-import { Home, User } from 'lucide-react';
+import { Home, User, LayoutDashboard } from 'lucide-react';
 
 export default function BottomNav({ active }) {
   const router = useRouter();
   return (
     <nav className="bnav">
+      <button className={`bnav-item ${active==='dashboard'?'active':''}`} onClick={() => router.push('/dashboard')}>
+        <span className="bnav-ico"><LayoutDashboard size={22} strokeWidth={active==='dashboard'?2.5:1.8} /></span>
+        <span>Dashboard</span>
+        <div className="bnav-dot" />
+      </button>
       <button className={`bnav-item ${active==='home'?'active':''}`} onClick={() => router.push('/')}>
         <span className="bnav-ico"><Home size={22} strokeWidth={active==='home'?2.5:1.8} /></span>
         <span>Home</span>
