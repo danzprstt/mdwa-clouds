@@ -113,11 +113,15 @@ export default function HomePage() {
           xhr.open('POST', '/api/upload'); xhr.send(fd);
         });
         if (result.ok) {
-          addLog(`${file.name} berhasil!`, 'ok');
-          if (result.catboxUrl) addLog(`  Catbox: ${result.catboxUrl}`, 'ok');
-          if (result.pixeldrainUrl) addLog(`  Pixeldrain: OK`, 'ok');
-          if (result.catboxError) addLog(`  Catbox error: ${result.catboxError}`, 'err');
-          if (result.pixeldrainError) addLog(`  Pixeldrain error: ${result.pixeldrainError}`, 'err');
+          if (result.cdnOk) {
+            addLog(`${file.name} berhasil! (${result.provider})`, 'ok');
+            if (result.file?.url) addLog(`  URL: ${result.file.url.slice(0,60)}`, 'ok');
+          } else {
+            addLog(`${file.name} tersimpan di database!`, 'ok');
+            addLog(`  CDN tidak tersedia, file dicatat tanpa link.`, 'warn');
+            if (result.warning) addLog(`  ${result.warning.slice(0,100)}`, 'warn');
+          }
+          if (result.file?.id) addLog(`  ID: ${result.file.id.slice(0,8)}...`, 'info');
           const ext = file.name.split('.').pop().toLowerCase();
           if (['mp4','webm','avi','mkv','mov'].includes(ext) && result.file?.id) {
             addLog('  Generating thumbnail...', 'info');
